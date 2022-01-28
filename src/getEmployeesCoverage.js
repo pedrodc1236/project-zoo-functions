@@ -14,35 +14,39 @@ const arrayLocationSpecies = (arrayLocations) =>
 const fun = () => {
   const arrayObj = employees.map((employee) => ({
     id: employee.id,
-    fullname: `${employee.firstName} ${employee.lastName}`,
+    fullName: `${employee.firstName} ${employee.lastName}`,
     species: arrayNameSpecies(employee.responsibleFor),
     locations: arrayLocationSpecies(employee.responsibleFor),
   }));
   return arrayObj;
 };
 
+const fun2 = (test) => {
+  const obj = {
+    id: test.id,
+    fullName: `${test.firstName} ${test.lastName}`,
+    species: arrayNameSpecies(test.responsibleFor),
+    locations: arrayLocationSpecies(test.responsibleFor),
+  };
+  return obj;
+};
+
 function getEmployeesCoverage(param) {
   if (param === undefined) {
     return fun();
   }
+  const official = employees.find(
+    (employee) =>
+      employee.firstName === param.name
+      || employee.id === param.id
+      || employee.lastName === param.name,
+  );
+  if (official === undefined) {
+    throw new Error('Informações inválidas');
+  }
   if (Object.keys(param).length === 1) {
-    const { name, id } = param;
-    const official = employees.find(
-      (employee) =>
-        employee.firstName === name ||
-        employee.id === id ||
-        employee.lastName === name
-    );
-    const obj = {
-      id: official.id,
-      fullname: `${official.firstName} ${official.lastName}`,
-      species: arrayNameSpecies(official.responsibleFor),
-      locations: arrayLocationSpecies(official.responsibleFor),
-    };
-    return obj;
+    return fun2(official);
   }
 }
-
-console.log(getEmployeesCoverage());
 
 module.exports = getEmployeesCoverage;
